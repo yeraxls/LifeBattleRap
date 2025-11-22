@@ -292,9 +292,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-
-            width: 300px;
-
+            height: 70%;
+            width: 30%;
+            overflow: auto;
             background: #0d162b;
             /* igual a tu paleta */
             padding: 22px;
@@ -326,6 +326,8 @@
         .edit-center label {
             margin-top: 6px;
             opacity: 0.9;
+            text-align: left;
+            width: 50%;
         }
 
         /* ----- INPUTS ----- */
@@ -341,6 +343,7 @@
                 inset -3px -3px 8px rgba(255, 255, 255, 0.05);
 
             transition: 0.2s ease;
+            width: 80%;
         }
 
         .edit-center input:focus {
@@ -497,6 +500,19 @@
                 <label>Jurado 3:&nbsp;</label>
                 <input type="text" id="jurado3Input">
             </div>
+            <h2>Vida y Daños</h2>
+             <div style="display: flex;">
+                <label>Vida:&nbsp;</label>
+                <input type="text" id="vidaMaxInput">
+            </div>
+            <div style="display: flex;">
+                <label>Daño leve:&nbsp;</label>
+                <input type="text" id="minDmgInput">
+            </div>
+            <div style="display: flex;">
+                <label>Daño fuerte:&nbsp;</label>
+                <input type="text" id="maxDmgInput">
+            </div>
 
             <div class="buttons">
                 <button id="cancelBtn" class="btn cancel">Cancelar</button>
@@ -507,7 +523,7 @@
     </div>
     <script>
         var editFlag = false;
-        const MAX_HEALTH = 100;
+        var maxHealth = 100;
         const DAMAGE_VALUES = {
             light: 5,
             heavy: 15
@@ -531,8 +547,8 @@
             '3': { player: 1, dmg: 'heavy' }
         };
 
-        let leftHealth = MAX_HEALTH;
-        let rightHealth = MAX_HEALTH;
+        let leftHealth = maxHealth;
+        let rightHealth = maxHealth;
 
         const leftFill = document.getElementById('left-fill');
         const rightFill = document.getElementById('right-fill');
@@ -544,10 +560,10 @@
         function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
         function updateUI() {
-            leftFill.style.width = (leftHealth / MAX_HEALTH * 100) + '%';
-            rightFill.style.width = (rightHealth / MAX_HEALTH * 100) + '%';
-            leftText.textContent = `${leftHealth} / ${MAX_HEALTH}`;
-            rightText.textContent = `${rightHealth} / ${MAX_HEALTH}`;
+            leftFill.style.width = (leftHealth / maxHealth * 100) + '%';
+            rightFill.style.width = (rightHealth / maxHealth * 100) + '%';
+            leftText.textContent = `${leftHealth} / ${maxHealth}`;
+            rightText.textContent = `${rightHealth} / ${maxHealth}`;
         }
 
         function flash(el) {
@@ -558,10 +574,10 @@
         function applyDamage(player, type) {
             const dmg = DAMAGE_VALUES[type];
             if (player === 0) {
-                leftHealth = clamp(leftHealth - dmg, 0, MAX_HEALTH);
+                leftHealth = clamp(leftHealth - dmg, 0, maxHealth);
                 flash(playerLeftEl);
             } else {
-                rightHealth = clamp(rightHealth - dmg, 0, MAX_HEALTH);
+                rightHealth = clamp(rightHealth - dmg, 0, maxHealth);
                 flash(playerRightEl);
             }
             updateUI();
@@ -591,8 +607,8 @@
 
         const resetBtn = document.getElementById('resetBtn');
         resetBtn.addEventListener('click', () => {
-            leftHealth = MAX_HEALTH;
-            rightHealth = MAX_HEALTH;
+            leftHealth = maxHealth;
+            rightHealth = maxHealth;
             updateUI();
         });
         const rapero1Input = document.getElementById('rapero1Input');
@@ -605,6 +621,9 @@
         const jurado2Span = document.getElementById('jurado2');
         const jurado3Input = document.getElementById('jurado3Input');
         const jurado3Span = document.getElementById('jurado3');
+        const vidaMaxInput = document.getElementById('vidaMaxInput');
+        const minDmgInput = document.getElementById('minDmgInput');
+        const maxDmgInput = document.getElementById('maxDmgInput');
         const editForm = document.getElementById('editForm');
         const editBtn = document.getElementById('editBtn');
         editBtn.addEventListener('click', () => {
@@ -616,6 +635,9 @@
             jurado3Input.value = jurado3Span.textContent;
             editForm.hidden = false;
             editBtn.hidden = true;
+            vidaMaxInput.value = maxHealth;
+            minDmgInput.value = DAMAGE_VALUES.light;
+            maxDmgInput.value = DAMAGE_VALUES.heavy;
 
         });
 
@@ -632,9 +654,14 @@
             jurado1Span.textContent = jurado1Input.value;
             jurado2Span.textContent = jurado2Input.value;
             jurado3Span.textContent = jurado3Input.value;
+            maxHealth = vidaMaxInput.value;
+            DAMAGE_VALUES.light = minDmgInput.value;
+            DAMAGE_VALUES.heavy = maxDmgInput.value;
+            jurado3Span.textContent = jurado3Input.value;
             editBtn.hidden = false;
             editForm.hidden = true;
             editFlag = false;
+            updateUI();
         });
     </script>
 </body>
