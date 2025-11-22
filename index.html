@@ -604,12 +604,14 @@
             const key = document.getElementById(`key-${e.key}`);
             if (key) key.classList.remove("active");
         });
-
-        const resetBtn = document.getElementById('resetBtn');
-        resetBtn.addEventListener('click', () => {
-            leftHealth = maxHealth;
+        function resetAll(){
+             leftHealth = maxHealth;
             rightHealth = maxHealth;
             updateUI();
+        }
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.addEventListener('click', () => {
+           resetAll()
         });
         const rapero1Input = document.getElementById('rapero1Input');
         const rapero1Span = document.getElementById('rapero1');
@@ -661,7 +663,7 @@
             editBtn.hidden = false;
             editForm.hidden = true;
             editFlag = false;
-            updateUI();
+            resetAll()
         });
     </script>
 </body>
