@@ -370,6 +370,7 @@
                 -3px -3px 8px rgba(255, 255, 255, 0.06);
 
             transition: 0.2s;
+            width: 49%;
         }
 
         .btn:hover {
@@ -470,22 +471,32 @@
             Editar
         </button>
         <div id="editForm" class="edit-center" hidden>
-            <h2>Editar nombres</h2>
+            <h2>Editar nombres raperos</h2>
+            <div style="display: flex;">
+                <label>Rapero 1:&nbsp;</label>
+                <input type="text" id="rapero1Input">
+            </div>
 
-            <label>Rapero 1</label>
-            <input type="text" id="rapero1Input">
+            <div style="display: flex;">
+                <label>Rapero 2:&nbsp;</label>
+                <input type="text" id="rapero2Input">
+            </div>
 
-            <label>Rapero 2</label>
-            <input type="text" id="rapero2Input">
+            <h2>Editar nombres jurados</h2>
+            <div style="display: flex;">
+                <label>Jurado 1:&nbsp;</label>
+                <input type="text" id="jurado1Input">
+            </div>
 
-            <label>Jurado 1</label>
-            <input type="text" id="jurado1Input">
+            <div style="display: flex;">
+                <label>Jurado 2:&nbsp;</label>
+                <input type="text" id="jurado2Input">
+            </div>
 
-            <label>Jurado 2</label>
-            <input type="text" id="jurado2Input">
-
-            <label>Jurado 3</label>
-            <input type="text" id="jurado3Input">
+            <div style="display: flex;">
+                <label>Jurado 3:&nbsp;</label>
+                <input type="text" id="jurado3Input">
+            </div>
 
             <div class="buttons">
                 <button id="cancelBtn" class="btn cancel">Cancelar</button>
@@ -495,6 +506,7 @@
 
     </div>
     <script>
+        var editFlag = false;
         const MAX_HEALTH = 100;
         const DAMAGE_VALUES = {
             light: 5,
@@ -556,6 +568,7 @@
         }
 
         window.addEventListener('keydown', (e) => {
+            if(editFlag) return;
             const key = e.key.toLowerCase();
             if (KEY_DIRECT[key]) {
                 const { player, dmg } = KEY_DIRECT[key];
@@ -565,11 +578,13 @@
 
         updateUI();
         document.addEventListener("keydown", (e) => {
+            if(editFlag) return;
             const key = document.getElementById(`key-${e.key}`);
             if (key) key.classList.add("active");
         });
 
         document.addEventListener("keyup", (e) => {
+            if(editFlag) return;
             const key = document.getElementById(`key-${e.key}`);
             if (key) key.classList.remove("active");
         });
@@ -593,6 +608,7 @@
         const editForm = document.getElementById('editForm');
         const editBtn = document.getElementById('editBtn');
         editBtn.addEventListener('click', () => {
+            editFlag = true;
             rapero1Input.value = rapero1Span.textContent;
             rapero2Input.value = rapero2Span.textContent;
             jurado1Input.value = jurado1Span.textContent;
@@ -607,6 +623,7 @@
         cancelBtn.addEventListener('click', () => {
             editForm.hidden = true;
             editBtn.hidden = false;
+            editFlag = false;
         });
         const saveBtn = document.getElementById('saveBtn');
         saveBtn.addEventListener('click', () => {
@@ -617,6 +634,7 @@
             jurado3Span.textContent = jurado3Input.value;
             editBtn.hidden = false;
             editForm.hidden = true;
+            editFlag = false;
         });
     </script>
 </body>
