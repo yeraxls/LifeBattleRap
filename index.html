@@ -30,6 +30,10 @@
             color: var(--text);
         }
 
+        [hidden] {
+            display: none !important;
+        }
+
         .container-body {
             min-height: 100vh;
             margin: 0;
@@ -244,6 +248,141 @@
             border-color: #0f0;
             box-shadow: 0 0 15px #00ff99;
         }
+
+        /* ----- POPUP ----- */
+        .popup {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 260px;
+
+            background: #0d162b;
+            /* fondo igual a tu panel */
+            padding: 18px;
+            border-radius: 18px;
+
+            box-shadow:
+                8px 8px 20px rgba(0, 0, 0, 0.45),
+                -5px -5px 10px rgba(255, 255, 255, 0.05);
+
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: "Inter", sans-serif;
+            color: #e6e9f0;
+            z-index: 999;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .popup h2 {
+            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ----- LABELS ----- */
+        .popup label {
+            margin-top: 4px;
+            opacity: 0.85;
+        }
+
+        /* ----- CONTENEDOR CENTRADO ----- */
+        .edit-center {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            width: 300px;
+
+            background: #0d162b;
+            /* igual a tu paleta */
+            padding: 22px;
+            border-radius: 20px;
+
+            box-shadow:
+                8px 8px 20px rgba(0, 0, 0, 0.45),
+                -5px -5px 10px rgba(255, 255, 255, 0.05);
+
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            font-family: "Inter", sans-serif;
+            color: #e6e9f0;
+
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 99;
+        }
+
+        .edit-center h2 {
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ----- LABELS ----- */
+        .edit-center label {
+            margin-top: 6px;
+            opacity: 0.9;
+        }
+
+        /* ----- INPUTS ----- */
+        .edit-center input {
+            background: #111b33;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px;
+            border-radius: 10px;
+            color: white;
+
+            box-shadow:
+                inset 4px 4px 10px rgba(0, 0, 0, 0.4),
+                inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+
+            transition: 0.2s ease;
+        }
+
+        .edit-center input:focus {
+            outline: none;
+            border-color: #3a82ff;
+        }
+
+        /* ----- BOTONES ----- */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+
+            background: #1a2339;
+
+            box-shadow:
+                4px 4px 12px rgba(0, 0, 0, 0.45),
+                -3px -3px 8px rgba(255, 255, 255, 0.06);
+
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            filter: brightness(1.15);
+        }
+
+        .cancel {
+            background: #a32727;
+        }
+
+        .save {
+            background: #2e7d32;
+        }
     </style>
 </head>
 
@@ -254,7 +393,7 @@
         <div class="stage">
             <div class="players">
                 <div class="player">
-                    <div class="name">Rapero 1</div>
+                    <div class="name"><span id="rapero1">Rapero 1</span></div>
                     <div class="card">
                         <div class="avatar">R1</div>
                         <div class="bar-outer">
@@ -266,7 +405,7 @@
                 </div>
 
                 <div class="player">
-                    <div class="name">Rapero 2</div>
+                    <div class="name"><span id="rapero2">Rapero 2</span></div>
                     <div class="card">
                         <div class="avatar">R2</div>
                         <div class="bar-outer">
@@ -280,7 +419,7 @@
 
             <div class="controls">
                 <div class="info">
-                    <h2>Jurado 1</h2>
+                    <h2><span id="jurado1">Jurado 1</span></h2>
                     <div class="keys">
                         <div style="display: flex;">
                             <div class="key" id="key-a">A<br><span>R1 leve</span></div>
@@ -293,7 +432,7 @@
                     </div>
                 </div>
                 <div class="info" style="margin-left: 25%;">
-                    <h2>Jurado 2</h2>
+                    <h2><span id="jurado2">Jurado 2</span></h2>
                     <div class="keys">
                         <div style="display: flex;">
                             <div class="key" id="key-h">H<br><span>R1 leve</span></div>
@@ -306,7 +445,7 @@
                     </div>
                 </div>
                 <div class="info" style="margin-left: 25%;">
-                    <h2>Jurado 3</h2>
+                    <h2><span id="jurado3">Jurado 3</span></h2>
                     <div class="keys">
                         <div style="display: flex;">
                             <div class="key" id="key-5">5<br><span>R1 leve</span></div>
@@ -326,10 +465,34 @@
             style="padding:10px 20px;font-size:16px;border-radius:8px;border:none;background:#ff3b3b;color:#fff;cursor:pointer;transition:0.2s;">
             Reiniciar
         </button>
-        <button id="resetBtn"
+        <button id="editBtn"
             style="padding:10px 20px;font-size:16px;border-radius:8px;border:none;background:#5280FF;color:#fff;cursor:pointer;transition:0.2s;">
             Editar
         </button>
+        <div id="editForm" class="edit-center" hidden>
+            <h2>Editar nombres</h2>
+
+            <label>Rapero 1</label>
+            <input type="text" id="rapero1Input">
+
+            <label>Rapero 2</label>
+            <input type="text" id="rapero2Input">
+
+            <label>Jurado 1</label>
+            <input type="text" id="jurado1Input">
+
+            <label>Jurado 2</label>
+            <input type="text" id="jurado2Input">
+
+            <label>Jurado 3</label>
+            <input type="text" id="jurado3Input">
+
+            <div class="buttons">
+                <button id="cancelBtn" class="btn cancel">Cancelar</button>
+                <button id="saveBtn" class="btn save">Guardar</button>
+            </div>
+        </div>
+
     </div>
     <script>
         const MAX_HEALTH = 100;
@@ -416,6 +579,44 @@
             leftHealth = MAX_HEALTH;
             rightHealth = MAX_HEALTH;
             updateUI();
+        });
+        const rapero1Input = document.getElementById('rapero1Input');
+        const rapero1Span = document.getElementById('rapero1');
+        const rapero2Input = document.getElementById('rapero2Input');
+        const rapero2Span = document.getElementById('rapero2');
+        const jurado1Input = document.getElementById('jurado1Input');
+        const jurado1Span = document.getElementById('jurado1');
+        const jurado2Input = document.getElementById('jurado2Input');
+        const jurado2Span = document.getElementById('jurado2');
+        const jurado3Input = document.getElementById('jurado3Input');
+        const jurado3Span = document.getElementById('jurado3');
+        const editForm = document.getElementById('editForm');
+        const editBtn = document.getElementById('editBtn');
+        editBtn.addEventListener('click', () => {
+            rapero1Input.value = rapero1Span.textContent;
+            rapero2Input.value = rapero2Span.textContent;
+            jurado1Input.value = jurado1Span.textContent;
+            jurado2Input.value = jurado2Span.textContent;
+            jurado3Input.value = jurado3Span.textContent;
+            editForm.hidden = false;
+            editBtn.hidden = true;
+
+        });
+
+        const cancelBtn = document.getElementById('cancelBtn');
+        cancelBtn.addEventListener('click', () => {
+            editForm.hidden = true;
+            editBtn.hidden = false;
+        });
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.addEventListener('click', () => {
+            rapero1Span.textContent = rapero1Input.value;
+            rapero2Span.textContent = rapero2Input.value;
+            jurado1Span.textContent = jurado1Input.value;
+            jurado2Span.textContent = jurado2Input.value;
+            jurado3Span.textContent = jurado3Input.value;
+            editBtn.hidden = false;
+            editForm.hidden = true;
         });
     </script>
 </body>
